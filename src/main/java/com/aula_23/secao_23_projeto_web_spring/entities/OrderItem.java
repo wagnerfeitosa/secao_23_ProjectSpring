@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.aula_23.secao_23_projeto_web_spring.entities.pk.OrderItemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ public class OrderItem implements Serializable{
 	
 	/*será criado duas colunas chave composta referente ao objeto OrderItemPk*/ 
 	@EmbeddedId
-	private OrderItemPk id;
+	private OrderItemPk id = new OrderItemPk();
 	
 	private Integer quantity;
 	private Double price;
@@ -30,6 +31,7 @@ public class OrderItem implements Serializable{
 		id.setOrder(order);
 		id.setProduct(product);
 	}
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
