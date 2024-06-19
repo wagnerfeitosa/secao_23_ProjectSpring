@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.aula_23.secao_23_projeto_web_spring.entities.Category;
 import com.aula_23.secao_23_projeto_web_spring.entities.Order;
 import com.aula_23.secao_23_projeto_web_spring.entities.OrderItem;
+import com.aula_23.secao_23_projeto_web_spring.entities.Payment;
 import com.aula_23.secao_23_projeto_web_spring.entities.Product;
 import com.aula_23.secao_23_projeto_web_spring.entities.User;
 import com.aula_23.secao_23_projeto_web_spring.enums.OrderStatus;
@@ -97,6 +98,16 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi4 = new OrderItem(o3,p5,2,p5.getPrice()); 
 		
 		orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
+		
+		/*Realizando um pagamento */
+		Payment pay1 = new Payment(null,Instant.parse("2019-06-20T21:00:07Z"),o1);
+		
+		/*Para salvar um objeto dependente associado em um para um não chamar o Repository
+		 * do proprio objeto foi ralizado associação de mão dubla em memoria*/	
+		o1.setPayment(pay1);
+		
+		//salvando o pagmento na base de dados
+		orderRepository.save(o1);
 		
 	}
 	
