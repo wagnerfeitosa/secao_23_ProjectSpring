@@ -103,7 +103,7 @@ public class TestConfig implements CommandLineRunner {
 		Payment pay1 = new Payment(null,Instant.parse("2019-06-20T21:00:07Z"),o1);
 		
 		/*Para salvar um objeto dependente associado em um para um não chamar o Repository
-		 * do proprio objeto foi ralizado associação de mão dubla em memoria*/	
+		 * do proprio objeto é ralizado associação de mão dubla em memoria*/	
 		o1.setPayment(pay1);
 		
 		//salvando o pagmento na base de dados

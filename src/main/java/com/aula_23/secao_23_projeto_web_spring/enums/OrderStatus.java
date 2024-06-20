@@ -26,5 +26,8 @@ public enum OrderStatus {
 		}
 		throw new IllegalArgumentException("Invalid OrderStatus code");
 	}
+	public static void main(String[] args) {
+		System.out.println(OrderStatus.valueOfObj(2));
+	}
 
 }
