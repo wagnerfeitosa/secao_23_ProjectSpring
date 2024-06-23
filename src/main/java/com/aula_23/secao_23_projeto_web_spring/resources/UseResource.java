@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,13 +62,21 @@ public class UseResource {
 		 * return ResponseEntity.created(uri) recebe um objeto do tipo URI
 		 * que retorna endereco do novo recurso inserido 
 		 * Objeto URI cria um endereco para retornar 
-		 * metodo path("/{id}") indica a url será digitadono navegador ursers/id
+		 * metodo path("/{id}") indica a url será digitado no navegador ursers/id
 		 * metodo buildAndExpand(obj.getId) recebe o id que foi inserido no caso id do obj inserido
 		 * metodo toUri() converte para objeto tipo URI*/
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 		
+	}
+	/*Obs:Responseentity.noContent() retorn responsta vazio codigo 204
+	 * Caso retorne codigo 500 significa Erro de integridade referencial dependencia
+	 * entre entidades*/
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }
