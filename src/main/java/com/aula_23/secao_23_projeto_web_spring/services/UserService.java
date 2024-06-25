@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.aula_23.secao_23_projeto_web_spring.entities.User;
 import com.aula_23.secao_23_projeto_web_spring.repositories.UserRepository;
+import com.aula_23.secao_23_projeto_web_spring.services.exceptions.ResourceNotFoundException;
 
 /*Anotação para registrar a classe para @Autowired
  * @Component
@@ -24,10 +25,11 @@ public class UserService {
 	public List<User> findAll(){
 		return userRepository.findAll();
 	}
-	
+	/*obj.orAlseThrow() tentará dar o Get,se não tiver user 
+	 * Lançará e excecao personalizada que recebe um id utilizando expressão lanbda*/
 	public User findById(Long id) {
 		Optional<User> obj = userRepository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(()-> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
