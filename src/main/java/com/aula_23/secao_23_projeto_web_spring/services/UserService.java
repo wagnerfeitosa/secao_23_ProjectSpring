@@ -13,6 +13,8 @@ import com.aula_23.secao_23_projeto_web_spring.repositories.UserRepository;
 import com.aula_23.secao_23_projeto_web_spring.services.exceptions.DataBaseException;
 import com.aula_23.secao_23_projeto_web_spring.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 /*Anotação para registrar a classe para @Autowired
  * @Component
  * @Repository
@@ -41,7 +43,7 @@ public class UserService {
 	public void delete(Long id) {
 		try{
 			userRepository.deleteById(id);
-			/*Não encontrando o id ara deletar lancará a sguinte excecao personalizada*/
+			/*Não encontrando o id para deletar lancará a seguinte excecao personalizada*/
 		}catch(EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
 			/*Excecao de violação de integfridade será criada 
@@ -53,12 +55,16 @@ public class UserService {
 	/*retorn User atualizado recebendo Long id para indicar qual dados será
 	 * atualizado e User dados que será o dado atualizado*/
 	public User update(Long id,User obj) {
-		/*pegando entidade na base de dados*/
-		User entity = userRepository.getReferenceById(id);
-		/*metodo que realiza a atualização*/
-		updateData(entity,obj);
-		/*salvando dados atualizados*/
-		return userRepository.save(entity);
+		try{
+			/*pegando entidade na base de dados*/
+			User entity = userRepository.getReferenceById(id);
+			/*metodo que realiza a atualização*/
+			updateData(entity,obj);
+			/*salvando dados atualizados*/
+			return userRepository.save(entity);
+		}catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 		
 	}
     /*metodo que realiza as atualizações */
