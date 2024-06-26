@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.aula_23.secao_23_projeto_web_spring.entities.User;
 import com.aula_23.secao_23_projeto_web_spring.repositories.UserRepository;
+import com.aula_23.secao_23_projeto_web_spring.services.exceptions.DataBaseException;
 import com.aula_23.secao_23_projeto_web_spring.services.exceptions.ResourceNotFoundException;
 
 /*Anotação para registrar a classe para @Autowired
@@ -35,9 +38,17 @@ public class UserService {
 	public User insert(User obj) {
 		return userRepository.save(obj);
 	}
-	
 	public void delete(Long id) {
-		userRepository.deleteById(id);
+		try{
+			userRepository.deleteById(id);
+			/*Não encontrando o id ara deletar lancará a sguinte excecao personalizada*/
+		}catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+			/*Excecao de violação de integfridade será criada 
+			 * uma classe especifica para trastar essa excecao*/ 
+		}catch(DataIntegrityViolationException e) {
+			throw new DataBaseException(e.getMessage());
+		}
 	}
 	/*retorn User atualizado recebendo Long id para indicar qual dados será
 	 * atualizado e User dados que será o dado atualizado*/
