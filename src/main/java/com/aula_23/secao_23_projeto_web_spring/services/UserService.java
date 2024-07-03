@@ -30,7 +30,7 @@ public class UserService {
 	public List<User> findAll(){
 		return userRepository.findAll();
 	}
-	/*obj.orAlseThrow() tentará dar o Get,se não tiver user 
+	/*obj.orAlseThrow() tentará dar o Get,se não tiver o id da busca 
 	 * Lançará e excecao personalizada que recebe um id utilizando expressão lanbda*/
 	public User findById(Long id) {
 		Optional<User> obj = userRepository.findById(id);
